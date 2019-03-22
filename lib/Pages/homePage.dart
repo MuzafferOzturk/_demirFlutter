@@ -33,7 +33,16 @@ class homePage extends StatefulWidget{
 }
 
 class homePageState extends State<homePage>{
-  int _selectedDrawerIndex = 0;
+  int _selectedDrawerIndex = 99;
+  @override
+  void initState(){
+    super.initState();
+    appCommon.firebaseInit().then((result){
+      setState(() {
+        _selectedDrawerIndex = 0;
+      });
+    });
+  }
   _getDrawerItemWidget(int pos){
     switch(pos){
       case 0:
@@ -51,7 +60,7 @@ class homePageState extends State<homePage>{
       case 6:
         return new FragmentContact();
       default:
-        return new Text("Error");
+        return new Center(child: SizedBox(width: MediaQuery.of(context).size.width/2,height: MediaQuery.of(context).size.width/2,child:CircularProgressIndicator(strokeWidth: 15,),),);
     }
   }
   _onSelectedItem(int index){
@@ -59,7 +68,6 @@ class homePageState extends State<homePage>{
     Navigator.of(context).pop();
   }
   _refreshClidk() async{
-
     await appCommon.firebaseInit();
     setState(() {
       _selectedDrawerIndex = 0;

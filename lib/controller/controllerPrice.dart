@@ -6,6 +6,7 @@ import 'package:demir/Utils/commonUtils.dart';
 import 'package:demir/Firebase/FirebaseCommon.dart';
 class controllerPrice{
   var context = null;
+  List<Widget> tabList = [];
   List<String> column = [];
   Map<int,List<String>> rows = {};
   controllerPrice(BuildContext context){
@@ -14,12 +15,9 @@ class controllerPrice{
   }
 
   initialize() async{
-    this.column = ["Bölge","Ø12-32 mm","Ø10 mm","Ø8 mm"];
     for(int i=0;i<15;i++){
       this.rows[i] = ["Konya","100","200","300"];
     }
-    if(!appCommon.bHomePageInit)
-      await appCommon.firebaseInit();
     print("-->List Size-> ${ListForDB.price.length}");
   }
   TabBar createTabBar(){
@@ -32,58 +30,75 @@ class controllerPrice{
   }
 
   List<Widget> _createTab(){
-
-    List<Widget> list = [];
-    list.add(Tab(text: 'İNŞAAT\nDEMİRİ',));
-    list.add(Tab(text: 'ÇELİK\nHASIR',));
-    list.add(Tab(text: 'HADDE',));
-    list.add(Tab(text: 'PROFİL',));
-    return list;
+    for(var item in ListForDB.category.reversed){
+      tabList.add(new Tab(text: item.cat_name.replaceAll(' ', '\n'), key: Key(item.cat_code.toString()),));
+    }
+    return tabList;
   }
 
   List<Widget> createTabBarView(){
     List<Widget> list = [];
-    list.add(_createDataTable());
-    list.add(Text("ÇELİK HASIR"));
-    list.add(Text("HADDE"));
-    list.add(Text("PROFİL"));
+    for(var item in tabList){
+      list.add(_createDataTable(item.key.toString()));
+    }
+//    list.add(_createDataTable());
+//    list.add(Text("ÇELİK HASIR"));
+//    list.add(Text("HADDE"));
+//    list.add(Text("PROFİL"));
     return list;
   }
 
-  Widget _createDataTable(){
+  Widget _createDataTable(String key){
 
     return new SingleChildScrollView(
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          children: _createColumnAndRows(),
+          children: _createColumnAndRows(key),
         ),
       ),
     );
   }
 
-  List<Widget> _createColumnAndRows(){
+  List<Widget> _createColumnAndRows(String key){
+    this.column.clear();
     List<Widget> list = [];
-    list.add(_createDataColumn());
-    _createDataRows().forEach((it){
+    list.add(_createDataColumn(key));
+    _createDataRows(key).forEach((it){
       list.add(it);
     });
     return list;
   }
-  Widget _createDataColumn(){
+  String _getProductName(String productCode){
+    for(var item in ListForDB.product)
+      if(productCode == item.pro_no.toString()){
+        return item.pro_name.toString();
+        break;
+      }
+  }
+  Widget _createDataColumn(String key){
     List<Widget> list = [];
-    this.column.forEach((it){
+    for(var item in ListForDB.price){
+      if("[<'${item.cat_code}'>]" == key){
+        this.column.add("Bölge");
+        item.produc_codes.split(',').forEach((product_code){
+          this.column.add(_getProductName(product_code));
+        });
+        break;
+      }
+    }
+    for(var item in this.column){
       list.add(new Container(
         padding:EdgeInsets.all(8.0),
         width: (MediaQuery.of(context).size.width)/this.column.length,
-        child: Text(it,
+        child: Text(item,
           textAlign: TextAlign.center,
           style: TextStyle(fontWeight: FontWeight.bold),
           overflow: TextOverflow.ellipsis,
           maxLines: 2,),
-        )
+      )
       );
-    });
+    }
     return new Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: list,
@@ -96,7 +111,7 @@ class controllerPrice{
       maxLines: 2,);
   }
 
-  List<Widget> _createDataRows(){
+  List<Widget> _createDataRows(String key){
     List<Widget> list = [];
     List<Widget> listRows = [];
     this.rows.forEach((key,value){

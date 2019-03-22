@@ -12,7 +12,7 @@ class appCommon{
   static final mailSubject = 'Fiyat Teklifi';
   static final mapAdress = 'Oymaağaç Mahallesi+Mobilyakent+Kocasinan/Kayseri';
   static bool bHomePageInit = false;
-  static firebaseInit() async{
+  static Future firebaseInit() async{
     FirebaseMain firebase = new FirebaseMain();
     await firebase.initialize();
     bHomePageInit = true;

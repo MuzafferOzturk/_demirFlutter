@@ -50,6 +50,9 @@ class priceExtend extends FirebaseAbsClass implements Price{
           case "rec_update":
             price.rec_update = value.toString();
             break;
+          case "product_codes":
+            price.produc_codes = value.toString();
+            break;
           case "history":
             var historyMap = value as Map;
             var price_historyList = historyMap["price_history"] as List;
