@@ -77,10 +77,10 @@ class controllerShipping {
     for(var item in ListForDB.shipping){
       if(item.outlet.compareTo(outlet) == 1){
         (jsonDecode(item.shipping) as Map).forEach((key, value){
-          print("->>>>$key $value");
+//          print("->>>>$key $value");
           int shipIndex = 0;
           for(var shipping in (value as List)){
-            print("Shipping $shipping");
+//            print("Shipping $shipping");
             if(shipIndex>=3){
               widgetList.add(
                 new Row(
