@@ -7,27 +7,9 @@ class FirebaseMain{
   initialize() async{
     clearAllDb();
     await _getDB();
-//    ListForDB.price.forEach((item){
-//      print("->>>${item.cat_code}");
-//    });
-//  ListForDB.advertisement.forEach((item){
-//    print("--->>${item.base64}");
-//  });
-//    ListForDB.category.forEach((item){
-//    print("--->>${item.cat_name}");
-//  });
-//    ListForDB.installment.forEach((item){
-//    print("--->>${item.bank_name}");
-//  });
     ListForDB.news.forEach((item){
       print("--->>${item.title}");
     });
-//    ListForDB.product.forEach((item){
-//      print("--->>${item.pro_name}");
-//    });
-//    ListForDB.shipping.forEach((item){
-//      print("--->>${item.outlet}");
-//    });
   }
   clearAllDb(){
     ListForDB.price.clear();
