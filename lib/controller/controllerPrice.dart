@@ -8,6 +8,8 @@ import 'dart:convert';
 import 'package:demir/Utils/commonUtils.dart';
 import 'package:demir/Firebase/FirebaseCommon.dart';
 import 'package:demir/Firebase/Price.dart';
+import 'package:demir/controller/enums/enums.dart';
+import 'package:url_launcher/url_launcher.dart';
 class controllerPrice{
   var context = null;
   List<Widget> tabList = [];
@@ -43,10 +45,6 @@ class controllerPrice{
       list.add(_createDataTable(item.key.toString()));
     }
 
-//    list.add(_createDataTable());
-//    list.add(Text("ÇELİK HASIR"));
-//    list.add(Text("HADDE"));
-//    list.add(Text("PROFİL"));
     return list;
   }
 
@@ -80,7 +78,7 @@ class controllerPrice{
                     new Container(
                       color: color.upCash,
                       child: FlatButton(
-                        onPressed: ()=>{},
+                        onPressed: ()=>{_LaunchUrl(enumsURL.WHATSPP)},
                         child: new Row(
                           children: <Widget>[
                             Image.asset(
@@ -101,7 +99,7 @@ class controllerPrice{
                     new Container(
                       color: color.colorPrimaryDark,
                       child: FlatButton(
-                        onPressed: ()=>{},
+                        onPressed: ()=>{_LaunchUrl(enumsURL.PHONE)},
                         child: new Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
@@ -368,7 +366,26 @@ class controllerPrice{
         )
     );
   }
-
+  _LaunchUrl(enumsURL bid) async {
+    var _launchURL = _setLaunchUrl(bid);
+//    print('<><>>>>Url ->$_launchURL');
+    if (await canLaunch(_launchURL))
+      await launch(_launchURL);
+    else
+      Scaffold.of(context).showSnackBar(new SnackBar(content: new Text("Uygulama Başlatılamadı!.",textAlign: TextAlign.center,)));
+  }
+  String _setLaunchUrl(enumsURL bid) {
+    switch (bid) {
+      case enumsURL.PHONE:
+        return 'tel:${appCommon.telPhone}';
+        break;
+      case enumsURL.WHATSPP:
+        return 'whatsapp://send${appCommon.separator}phone=${appCommon.telPhone}&text=${Uri.encodeFull('${appCommon.messageBody}')}';
+        break;
+      default:
+        return '';
+    }
+  }
   //region DATA TABLE
 //  DataTable _createDataTable(List<String> column, Map<int,List<String>> rows){
 //    return DataTable(
@@ -442,7 +459,7 @@ class priceDetail extends StatelessWidget {
           }
       }
     }
-    print("<><>>Data-> $data");
+//    print("<><>>Data-> $data");
     return [
       new charts.Series<priceChart, String>(
         id: 'Sales',

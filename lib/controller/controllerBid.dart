@@ -7,7 +7,6 @@ import 'package:demir/controller/enums/enums.dart';
 class controllerBid {
   var context = null;
   controllerBid(this.context);
-  final separator = Platform.isIOS ? '&' : '?';
   LaunchUrl(enumsURL bid) async {
     var _launchURL = setLaunchUrl(bid);
     print('<><>>>>Url ->$_launchURL');
@@ -20,16 +19,16 @@ class controllerBid {
   String setLaunchUrl(enumsURL bid) {
     switch (bid) {
       case enumsURL.MAIL:
-        return 'mailto:${appCommon.mail}${separator}subject=${Uri.encodeFull('${appCommon.mailSubject}')}&body=${Uri.encodeFull('${appCommon.messageBody}')}';
+        return 'mailto:${appCommon.mail}${appCommon.separator}subject=${Uri.encodeFull('${appCommon.mailSubject}')}&body=${Uri.encodeFull('${appCommon.messageBody}')}';
         break;
       case enumsURL.PHONE:
         return 'tel:${appCommon.telPhone}';
         break;
       case enumsURL.SMS:
-        return 'sms:${appCommon.telPhone}${separator}body=${Uri.encodeFull('${appCommon.messageBody}')}';
+        return 'sms:${appCommon.telPhone}${appCommon.separator}body=${Uri.encodeFull('${appCommon.messageBody}')}';
         break;
       case enumsURL.WHATSPP:
-        return 'whatsapp://send${separator}phone=${appCommon.telPhone}&text=${Uri.encodeFull('${appCommon.messageBody}')}';
+        return 'whatsapp://send${appCommon.separator}phone=${appCommon.telPhone}&text=${Uri.encodeFull('${appCommon.messageBody}')}';
         break;
       default:
         return '';

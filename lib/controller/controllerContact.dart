@@ -5,7 +5,6 @@ import 'package:demir/Utils/commonUtils.dart';
 import 'dart:io';
 
 class controllerContact{
-  final separator = Platform.isIOS ? '&' : '?';
   var context = null;
   controllerContact(this.context);
   LaunchUrl(enumsURL bid) async {
@@ -20,14 +19,14 @@ class controllerContact{
   String setLaunchUrl(enumsURL bid) {
     switch (bid) {
       case enumsURL.MAIL:
-        return 'mailto:${appCommon.mail}${separator}subject=${Uri.encodeFull('${appCommon.mailSubject}')}&body=${Uri.encodeFull('${appCommon.messageBody}')}';
+        return 'mailto:${appCommon.mail}${appCommon.separator}subject=${Uri.encodeFull('${appCommon.mailSubject}')}&body=${Uri.encodeFull('${appCommon.messageBody}')}';
         break;
       case enumsURL.PHONE:
         return 'tel:${appCommon.landPhone}';
         break;
       case enumsURL.LOCATION:
 //        if(Platform.isAndroid)
-          return 'https://www.google.com/maps/dir/${separator}api=1&origin=&destination=${appCommon.mapAdress}&travelmode=driving';
+          return 'https://www.google.com/maps/dir/${appCommon.separator}api=1&origin=&destination=${appCommon.mapAdress}&travelmode=driving';
 //        else
 //          return '';
         break;

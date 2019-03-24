@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:demir/Firebase/FirebaseMain.dart';
 import 'package:demir/http/Currency.dart';
@@ -16,6 +18,7 @@ class appCommon{
   static final mapAdress = 'Oymaağaç Mahallesi+Mobilyakent+Kocasinan/Kayseri';
   static bool bHomePageInit = false;
   static final currencyURL = "http://www.tcmb.gov.tr/kurlar/today.xml";
+  static final separator = Platform.isIOS ? '&' : '?';
   static Currency currency = new Currency();
   static Future firebaseInit() async{
     FirebaseMain firebase = new FirebaseMain();
