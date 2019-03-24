@@ -68,6 +68,9 @@ class homePageState extends State<homePage>{
     Navigator.of(context).pop();
   }
   _refreshClidk() async{
+    setState(() {
+      _selectedDrawerIndex = 99;
+    });
     await appCommon.firebaseInit();
     setState(() {
       _selectedDrawerIndex = 0;

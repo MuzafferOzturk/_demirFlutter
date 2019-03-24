@@ -9,7 +9,7 @@ class color{
   static final downCash = const Color(0xFFFF0000);
   static final headerText = const Color(0xFFFFFFFF);
   static final opacity = const Color(0xFF00000000);
-  static final column1 = const Color(0xFFeaebeb);
+  static final column1 = const Color(0xeFFFaebeb);
   static final column2 = const Color(0xFF2b2f71);
   static final white = const Color(0xFFFFFFF);
   static final black = const Color(0xFF000000);

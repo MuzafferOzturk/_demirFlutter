@@ -205,7 +205,6 @@ class controllerPrice{
         if(item.history!=null)
           for(var historyItem in item.history){
             if(appCommon.city[int.parse(historyItem.city_code)-1].compareTo(city_name) == 0){
-//              print("<><>>>${historyItem.date}");
               for(var priceItem in historyItem.date){
                 data.add(new priceChart(priceItem.rec_date, int.parse(priceItem.price)));
               }
@@ -304,27 +303,28 @@ class controllerPrice{
 
       listRows.add(new GestureDetector(
           onTap: (){
-//            Navigator.push(
-//                context,
-//                MaterialPageRoute(builder: (context) => priceDetail(key, city_name)));
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => priceDetail(key, city_name)));
 //            chartRow.child. = true;
-            showDialog(context: context,
-            builder: (BuildContext context){
-              return AlertDialog(
-                title: new Text(city_name),
-                content: new charts.BarChart(
-                  _createDataForChart(key, city_name),
-                  animate: true,
-                  behaviors: [new charts.PanAndZoomBehavior()],
-                ),
-                actions: <Widget>[
-                  new FlatButton(onPressed: (){
-                        Navigator.of(context).pop();
-                      },
-                      child: new Text("Kapat"))
-                ],
-              );
-            });
+//            showDialog(context: context,
+//            builder: (BuildContext context){
+//              return AlertDialog(
+//                title: new Text(city_name),
+//                content: new charts.BarChart(
+//                  _createDataForChart(key, city_name),
+//                  animate: true,
+//                  behaviors: [new charts.PanAndZoomBehavior()],
+//
+//                ),
+//                actions: <Widget>[
+//                  new FlatButton(onPressed: (){
+//                        Navigator.of(context).pop();
+//                      },
+//                      child: new Text("Kapat"))
+//                ],
+//              );
+//            });
           },
           child:row,
         )
@@ -438,9 +438,14 @@ class priceDetail extends StatelessWidget {
         ),
         body: LayoutBuilder(builder:
             (BuildContext context, BoxConstraints viewportConstraints) {
-          return new charts.BarChart(
-              _createDataForChart(keyStr, city_name),
-              animate: false);
+          return new Container(
+            padding: EdgeInsets.all(8.0),
+            child: charts.BarChart(
+                _createDataForChart(keyStr, city_name),
+                animate: false,
+                vertical: false,
+                behaviors: [new charts.PanAndZoomBehavior()]),
+          );
         }));
   }
   List<charts.Series<priceChart,String>> _createDataForChart(String key,String city_name){
