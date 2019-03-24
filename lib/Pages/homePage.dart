@@ -69,6 +69,7 @@ class homePageState extends State<homePage>{
   }
   _refreshClidk() async{
     await appCommon.firebaseInit();
+//    await appCommon.getCurrency();
     setState(() {
       _selectedDrawerIndex = 0;
     });

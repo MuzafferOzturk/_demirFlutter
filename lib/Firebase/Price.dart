@@ -106,7 +106,7 @@ class price_history{
       });
       dateClassList.add(new dateClass.toDB(price, rec_date));
     });
-
+    this.date = dateClassList;
   }
 }
 

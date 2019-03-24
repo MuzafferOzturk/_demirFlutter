@@ -1,10 +1,13 @@
+import 'dart:async';
 import 'dart:collection';
+import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import 'package:demir/Utils/color.dart';
 import 'package:demir/Firebase/Price.dart';
 import 'dart:convert';
 import 'package:demir/Utils/commonUtils.dart';
 import 'package:demir/Firebase/FirebaseCommon.dart';
+import 'package:demir/Firebase/Price.dart';
 class controllerPrice{
   var context = null;
   List<Widget> tabList = [];
@@ -16,13 +19,6 @@ class controllerPrice{
   }
 
   initialize() async{
-//    for(int i=0;i<15;i++){
-//      this.rows[i] = ["Konya","100","200","300"];
-//    }
-//  this.rows.add(["85","0","0","0"]);
-//  this.rows.add(["86","0","0","0"]);
-//  this.rows.add(["87","0","0","0"]);
-//  this.rows.add(["88","0","0","0"]);
     print("-->List Size-> ${ListForDB.price.length}");
   }
   TabBar createTabBar(){
@@ -46,6 +42,7 @@ class controllerPrice{
     for(var item in tabList){
       list.add(_createDataTable(item.key.toString()));
     }
+
 //    list.add(_createDataTable());
 //    list.add(Text("ÇELİK HASIR"));
 //    list.add(Text("HADDE"));
@@ -54,15 +51,97 @@ class controllerPrice{
   }
 
   Widget _createDataTable(String key){
-
-    return new SingleChildScrollView(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: _createColumnAndRows(key),
+    return new Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        new Container(
+          height: MediaQuery.of(context).size.height/1.8,
+          child: new SingleChildScrollView(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: _createColumnAndRows(key),
+              ),
+            ),
+          ),
         ),
-      ),
-    );
+
+        /**
+        TODO Tablo altındaki widgetlar burda oluşturuldu kaldırılması gerek.
+         */
+        new Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            new Container(
+              padding: EdgeInsets.all(8.0),
+              child: new Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    new Container(
+                      color: color.upCash,
+                      child: FlatButton(
+                        onPressed: ()=>{},
+                        child: new Row(
+                          children: <Widget>[
+                            Image.asset(
+                              "assets/whatsapp_main.png",
+                              scale: 1.3,
+                            ),
+                            Text(
+                              'Whatsapp\nİletişim',
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    new Container(
+                      color: color.colorPrimaryDark,
+                      child: FlatButton(
+                        onPressed: ()=>{},
+                        child: new Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Image.asset(
+                              "assets/call_main.png",
+                              scale: 1.3,
+                            ),
+                            Text(
+                              'Nakliye Dahil\nTeklif Al',
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  ]
+              ),
+            ),
+            new Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("USD ALIŞ:${appCommon.currency.usdAlis} USD SATIŞ:${appCommon.currency.usdSatis}\n"
+                    "EURO ALIŞ:${appCommon.currency.euroAlis} EURO SATIŞ:${appCommon.currency.euroSatis}",
+                maxLines: 2,
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontWeight: FontWeight.bold),)
+              ],
+            )
+          ],
+        )
+
+      ],
+    ) ;
+
+
+
   }
 
   List<Widget> _createColumnAndRows(String key){
@@ -73,9 +152,10 @@ class controllerPrice{
     for(var item in rowList){
       list.add(item);
     }
-//    _createDataRows(key).forEach((it){
-//      list.add(it);
-//    });
+    var kdvStr = "[<'1'>]" == key ? "Fiyatlara KDV Dahildir." : "Fiyatlara KDV Dahil Değildir.";
+    list.add(new Center(
+      child: Text(kdvStr),
+    ));
     return list;
   }
   String _getProductName(String productCode){
@@ -120,7 +200,32 @@ class controllerPrice{
       style: new TextStyle(color: color),
       maxLines: 2,);
   }
-
+  List<charts.Series<priceChart,String>> _createDataForChart(String key,String city_name){
+    List<priceChart> data = new List();
+    for(var item in ListForDB.price){
+      if("[<'${item.cat_code}'>]" == key){
+        if(item.history!=null)
+          for(var historyItem in item.history){
+            if(appCommon.city[int.parse(historyItem.city_code)-1].compareTo(city_name) == 0){
+//              print("<><>>>${historyItem.date}");
+              for(var priceItem in historyItem.date){
+                data.add(new priceChart(priceItem.rec_date, int.parse(priceItem.price)));
+              }
+              break;
+            }
+          }
+      }
+    }
+    return [
+      new charts.Series<priceChart, String>(
+        id: 'Sales',
+        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        domainFn: (priceChart sales, _) => sales.date,
+        measureFn: (priceChart sales, _) => sales.price,
+        data: data,
+      )
+    ];
+  }
   List<Widget> _createDataRows(String key){
     List<Widget> list = [];
     List<Widget> listRows = [];
@@ -132,9 +237,7 @@ class controllerPrice{
             String city_code = "";
             String price = "";
             String pre_last = "";
-//            print("subPrice->>$subPrice");
             (subPrice as Map).forEach((subPriceItem, subPriceValue){
-//              print("<><>subPriceItem -> $subPriceItem val-> $subPriceValue");
               switch(subPriceItem){
                 case "city_code":
                   city_code = appCommon.city[int.parse(subPriceValue.toString())-1];
@@ -165,25 +268,24 @@ class controllerPrice{
                 rowColor.add(color.stableCash);
               }
             }
-//            for(var splitItem in price.split(",")){
-//              rowList.add(splitItem);
-//            }
             _rowList[rowList] = rowColor;
             this.rows.add(_rowList);
-//            index++;
           }
         });
         break;
       }
     };
-    print("<><>${this.rows}");
     for(var j = 0; j<this.rows.length;j++){
-      print("<><>${this.rows[j]}");
+      var city_name = "";
       list = new List();
       this.rows[j].forEach((key, value){
         for(var i = 0;i<key.length;i++){
-          String text = i==0 ? key[i]: '${key[i]}₺';
-//        Text textWidget = _createRowText(text, j);
+          var text="";
+          if(i==0){
+            text = key[i];
+            city_name = key[i];
+          }
+          else text = '${key[i]}₺';
           list.add(_createRowWidget(i, text, value[i]));
         }
       });
@@ -192,9 +294,39 @@ class controllerPrice{
         key: Key("$j"),
         children: list,
       );
+//      Row chartRow = new Row(
+//        children: <Widget>[
+//          new Container(
+//            width: MediaQuery.of(context).size.width,
+//            height: MediaQuery.of(context).size.height/5,
+//            child: new Text("${row.key}"),
+//          ),
+//        ],
+//      );
+
       listRows.add(new GestureDetector(
           onTap: (){
-            print("${row.key}");
+//            Navigator.push(
+//                context,
+//                MaterialPageRoute(builder: (context) => priceDetail(key, city_name)));
+//            chartRow.child. = true;
+            showDialog(context: context,
+            builder: (BuildContext context){
+              return AlertDialog(
+                title: new Text(city_name),
+                content: new charts.BarChart(
+                  _createDataForChart(key, city_name),
+                  animate: true,
+                  behaviors: [new charts.PanAndZoomBehavior()],
+                ),
+                actions: <Widget>[
+                  new FlatButton(onPressed: (){
+                        Navigator.of(context).pop();
+                      },
+                      child: new Text("Kapat"))
+                ],
+              );
+            });
           },
           child:row,
         )
@@ -212,7 +344,14 @@ class controllerPrice{
     return listRows;
   }
 
-  Widget _createRowWidget(int index, String text, Color color){
+  Widget _createRowWidget(int index, String text, Color colorRow){
+    var assetText = "";
+    if(colorRow == color.upCash)
+      assetText = "down_arrow";
+    else if(colorRow == color.downCash)
+      assetText = "up_arrow";
+    else
+      assetText = "right_arrow";
     return index == 0 ? new Container(
       padding:EdgeInsets.all(8.0),
       width: (MediaQuery.of(context).size.width-16)/this.column.length,
@@ -223,12 +362,13 @@ class controllerPrice{
         child: new Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            _createRowText(text, index, color),
-            Image.asset("assets/arrow/right_arrow.png",scale: 4,),
+            _createRowText(text, index, colorRow),
+            Image.asset("assets/arrow/${assetText}.png",scale: 4,),
           ],
         )
     );
   }
+
   //region DATA TABLE
 //  DataTable _createDataTable(List<String> column, Map<int,List<String>> rows){
 //    return DataTable(
@@ -261,4 +401,56 @@ class controllerPrice{
 //  }
   //endregion
 
+}
+class priceChart {
+  final String date;
+  final int price;
+
+  priceChart(this.date, this.price);
+}
+
+class priceDetail extends StatelessWidget {
+  var keyStr = "";
+  var city_name = "";
+  priceDetail(this.keyStr, this.city_name);
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(city_name),
+        ),
+        body: LayoutBuilder(builder:
+            (BuildContext context, BoxConstraints viewportConstraints) {
+          return new charts.BarChart(
+              _createDataForChart(keyStr, city_name),
+              animate: false);
+        }));
+  }
+  List<charts.Series<priceChart,String>> _createDataForChart(String key,String city_name){
+    List<priceChart> data = new List();
+    for(var item in ListForDB.price){
+      if("[<'${item.cat_code}'>]" == key){
+        if(item.history!=null)
+          for(var historyItem in item.history){
+            if(appCommon.city[int.parse(historyItem.city_code)-1].compareTo(city_name) == 0){
+//              print("<><>>>${historyItem.date}");
+              for(var priceItem in historyItem.date){
+                data.add(new priceChart(priceItem.rec_date, int.parse(priceItem.price)));
+              }
+              break;
+            }
+          }
+      }
+    }
+    print("<><>>Data-> $data");
+    return [
+      new charts.Series<priceChart, String>(
+        id: 'Sales',
+        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        domainFn: (priceChart sales, _) => sales.date,
+        measureFn: (priceChart sales, _) => sales.price,
+        data: data,
+      )
+    ];
+  }
 }
