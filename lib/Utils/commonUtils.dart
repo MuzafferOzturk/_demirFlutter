@@ -17,9 +17,11 @@ class appCommon{
   static final mailSubject = 'Fiyat Teklifi';
   static final mapAdress = 'Oymaağaç Mahallesi+Mobilyakent+Kocasinan/Kayseri';
   static bool bHomePageInit = false;
+  static bool bFragmentControl = false;
   static final currencyURL = "http://www.tcmb.gov.tr/kurlar/today.xml";
   static final separator = Platform.isIOS ? '&' : '?';
   static Currency currency = new Currency();
+  static final formKey = new GlobalKey<FormState>();
   static Future firebaseInit() async{
     FirebaseMain firebase = new FirebaseMain();
     await firebase.initialize();

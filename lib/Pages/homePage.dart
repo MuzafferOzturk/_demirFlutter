@@ -8,6 +8,7 @@ import 'package:demir/Fragments/fragmentLogin.dart';
 import 'package:demir/Utils/color.dart';
 import 'package:flutter/material.dart';
 import 'package:demir/Utils/commonUtils.dart';
+import 'package:demir/Utils/SharedPreferences.dart';
 
 class drawerItem{
   String title;
@@ -36,18 +37,23 @@ class homePageState extends State<homePage>{
   @override
   void initState(){
     super.initState();
-    if(true){
-      setState(() {
-        _selectedDrawerIndex = 7;
-      });
-    }
-    else{
-      appCommon.firebaseInit().then((result){
+    SharedPref pref = new SharedPref();
+    print("<><>>>>Pref ${pref.readBool("LogIn")}");
+    pref.readBool("LogIn").then((value){
+      if(!value){
         setState(() {
-          _selectedDrawerIndex = 0;
+          _selectedDrawerIndex = 7;
         });
-      });
-    }
+
+      }
+      else{
+        appCommon.firebaseInit().then((result){
+          setState(() {
+            _selectedDrawerIndex = 0;
+          });
+        });
+      }
+    });
   }
   _getDrawerItemWidget(int pos){
     switch(pos){
@@ -100,6 +106,7 @@ class homePageState extends State<homePage>{
       );
     }
     return new Scaffold(
+      resizeToAvoidBottomPadding: false,
       appBar: new AppBar(
         title: new Image.asset("assets/logo.png"),
         actions: <Widget>[

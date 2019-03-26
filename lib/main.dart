@@ -21,6 +21,9 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(
         primaryColor: color.colorPrimaryDark),
       home: new homePage(),
+      routes: <String, WidgetBuilder>{
+        '/homepage':(BuildContext context) =>homePage()
+    },
     );
   }
 }
