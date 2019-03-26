@@ -4,6 +4,17 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class FirebaseMain{
+  static saveUser(String company, String mail, String name_surname, String phone) async{
+    final users = FirebaseDatabase.instance.reference().child('Users');
+    await users.child(new DateTime.now().millisecondsSinceEpoch.toString()).set({
+      'company': company,
+      'mail'   : mail,
+      'name_surname' : name_surname,
+      'phone' : phone
+    }).then((_){
+
+    });
+  }
   initialize() async{
     clearAllDb();
     await _getDB();

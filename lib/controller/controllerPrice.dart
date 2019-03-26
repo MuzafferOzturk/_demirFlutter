@@ -51,7 +51,7 @@ class controllerPrice{
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         new Container(
-          height: MediaQuery.of(context).size.height/1.8,
+          height: MediaQuery.of(context).size.height/1.85,
           child: new SingleChildScrollView(
             child: Center(
               child: Column(
@@ -122,12 +122,14 @@ class controllerPrice{
             new Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text("USD ALIŞ:${appCommon.currency.usdAlis} USD SATIŞ:${appCommon.currency.usdSatis}\n"
+                Container(padding: EdgeInsets.only(bottom: 10),
+                child: Text("USD ALIŞ:${appCommon.currency.usdAlis} USD SATIŞ:${appCommon.currency.usdSatis}\n"
                     "EURO ALIŞ:${appCommon.currency.euroAlis} EURO SATIŞ:${appCommon.currency.euroSatis}",
-                maxLines: 2,
-                textAlign: TextAlign.center,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontWeight: FontWeight.bold),)
+                    maxLines: 2,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontWeight: FontWeight.bold),),),
+
               ],
             )
           ],

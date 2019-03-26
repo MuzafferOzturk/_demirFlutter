@@ -6,6 +6,9 @@ import 'package:demir/Utils/SharedPreferences.dart';
 class FragmentLogin extends StatelessWidget {
   var context;
   ControllerLogin controller;
+  final _nameText = TextEditingController();
+  final _mailText = TextEditingController();
+  final _companyText = TextEditingController();
   String phoneNumber = '';
   RaisedButton signButton;
   bool validateAndSave() {
@@ -20,7 +23,7 @@ class FragmentLogin extends StatelessWidget {
   }
   validateAndSubmit() {
     if (validateAndSave()) {
-      controller.verifyPhone(phoneNumber);
+      controller.verifyPhone(phoneNumber, _companyText.text, _mailText.text, _nameText.text);
 //      SharedPref pref = SharedPref();
 //      pref.writeBool("LogIn", true);
 //      Navigator.of(context).pushNamed('/homepage');
@@ -42,6 +45,7 @@ class FragmentLogin extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     new TextFormField(
+                      controller: _nameText,
                       decoration: InputDecoration(labelText: 'Ad - Soyad'),
                       validator: (value) =>
                       value.isEmpty
@@ -49,6 +53,7 @@ class FragmentLogin extends StatelessWidget {
                           : null,
                     ),
                     new TextFormField(
+                      controller: _companyText,
                       decoration: InputDecoration(labelText: 'Firma'),
                       validator: (value) =>
                       value.isEmpty
@@ -56,6 +61,7 @@ class FragmentLogin extends StatelessWidget {
                           : null,
                     ),
                     new TextFormField(
+                      controller: _mailText,
                       decoration: InputDecoration(labelText: 'Mail'),
                       validator: (value) =>
                       value.isEmpty
