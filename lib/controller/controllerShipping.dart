@@ -18,28 +18,6 @@ class controllerShipping {
   }
   List<Widget> createDataColumnAndRows(String outlet){
     List<Widget> widgetList = new List();
-//    widgetList.add(new Row(
-//      children: <Widget>[
-//        Text("test"),
-//        Text("test"),
-//        Text("test"),
-//        Text("test"),
-//        Text("test"),
-//        Text("test"),Text("test"),
-//        Text("test"),
-//        Text("test"),
-//        Text("test"),
-//        Text("test"),
-//        Text("test"),
-//        Text("test"),
-//        Text("test"),
-//        Text("test"),
-//        Text("test"),
-//        Text("test"),
-//        Text("test"),
-//        Text("test"),
-//      ],
-//    ));
     widgetList.add(_createDataColumn());
 //    _createDataRows(outlet);
     for(var item in _createDataRows(outlet)){

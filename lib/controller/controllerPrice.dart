@@ -3,11 +3,9 @@ import 'dart:collection';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import 'package:demir/Utils/color.dart';
-import 'package:demir/Firebase/Price.dart';
 import 'dart:convert';
 import 'package:demir/Utils/commonUtils.dart';
 import 'package:demir/Firebase/FirebaseCommon.dart';
-import 'package:demir/Firebase/Price.dart';
 import 'package:demir/controller/enums/enums.dart';
 import 'package:url_launcher/url_launcher.dart';
 class controllerPrice{

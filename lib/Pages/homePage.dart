@@ -4,10 +4,9 @@ import 'package:demir/Fragments/fragmentInstallment.dart';
 import 'package:demir/Fragments/fragmentNews.dart';
 import 'package:demir/Fragments/fragmentPrice.dart';
 import 'package:demir/Fragments/fragmentShipping.dart';
-import 'package:demir/Fragments/fragmentTechnic.dart';
+import 'package:demir/Fragments/fragmentLogin.dart';
 import 'package:demir/Utils/color.dart';
 import 'package:flutter/material.dart';
-import 'package:demir/Firebase/FirebaseMain.dart';
 import 'package:demir/Utils/commonUtils.dart';
 
 class drawerItem{
@@ -37,11 +36,18 @@ class homePageState extends State<homePage>{
   @override
   void initState(){
     super.initState();
-    appCommon.firebaseInit().then((result){
+    if(true){
       setState(() {
-        _selectedDrawerIndex = 0;
+        _selectedDrawerIndex = 7;
       });
-    });
+    }
+    else{
+      appCommon.firebaseInit().then((result){
+        setState(() {
+          _selectedDrawerIndex = 0;
+        });
+      });
+    }
   }
   _getDrawerItemWidget(int pos){
     switch(pos){
@@ -59,6 +65,8 @@ class homePageState extends State<homePage>{
 //        return new FragmentTechnic();
       case 5:
         return new FragmentContact();
+      case 7:
+        return new FragmentLogin();
       default:
         return new Center(child: SizedBox(width: MediaQuery.of(context).size.width/2,height: MediaQuery.of(context).size.width/2,child:CircularProgressIndicator(strokeWidth: 15,),),);
     }
