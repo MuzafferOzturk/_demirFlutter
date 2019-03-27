@@ -21,6 +21,7 @@ class ControllerLogin {
     };
 
     final PhoneCodeSent smsCodeSent = (String verId, [int forceCodeResend]){
+      Navigator.pop(context);
       verificationId = verId;
       smsCodeDialog(context, verificationId, company, mail, name_surname, number);
     };
@@ -29,7 +30,10 @@ class ControllerLogin {
       print('Kayıt Olundu');
     };
     final PhoneVerificationFailed verfiedFailed = (AuthException ex){
-      Scaffold.of(context).showSnackBar(new SnackBar(content: new Text("Bir Hata Oluştu İnternet Bağlantınızı Kontrol Edin.",textAlign: TextAlign.center,)));
+      Navigator.pop(context);
+      Fluttertoast.showToast(msg: "Bir Hata Oluştu. Tefon Numaranızı ve İnternet Bağlantınızı Kontrol Edin.",
+          toastLength: Toast.LENGTH_LONG);
+      //Scaffold.of(context).showSnackBar(new SnackBar(content: new Text("Bir Hata Oluştu İnternet Bağlantınızı Kontrol Edin.",textAlign: TextAlign.center,)));
       print('<><>Ex ${ex.message}');
     };
     await FirebaseAuth.instance.verifyPhoneNumber(

@@ -1,5 +1,5 @@
 name: demir
-description: A new Flutter project.
+description: Demir Project.
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -29,6 +29,7 @@ dependencies:
   xml: ^3.4.1
   flutter_launcher_icons: "^0.7.0"
   shared_preferences: ^0.5.1+2
+  onesignal: ^1.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

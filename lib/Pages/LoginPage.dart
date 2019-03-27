@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:demir/Utils/commonUtils.dart';
 import 'package:demir/Utils/SharedPreferences.dart';
-import 'package:demir/Utils/color.dart';
 import 'package:flutter/services.dart';
 import 'package:demir/controller/controllerLogin.dart';
 
@@ -49,6 +48,9 @@ class loginPageState extends State<loginPage>{
   }
   _validateAndSubmit() {
     if (_validateAndSave()) {
+      showDialog(context: context,
+      barrierDismissible: false,
+      builder:(BuildContext context) => new Center(child: SizedBox(width: MediaQuery.of(context).size.width/2,height: MediaQuery.of(context).size.width/2,child:CircularProgressIndicator(strokeWidth: 15,),),));
       controller.verifyPhone(phoneNumber, _companyText.text, _mailText.text, _nameText.text);
 //      SharedPref pref = SharedPref();
 //      pref.writeBool("LogIn", true);
