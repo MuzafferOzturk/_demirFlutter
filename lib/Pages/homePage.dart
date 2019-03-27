@@ -4,7 +4,6 @@ import 'package:demir/Fragments/fragmentInstallment.dart';
 import 'package:demir/Fragments/fragmentNews.dart';
 import 'package:demir/Fragments/fragmentPrice.dart';
 import 'package:demir/Fragments/fragmentShipping.dart';
-import 'package:demir/Fragments/fragmentLogin.dart';
 import 'package:demir/Utils/color.dart';
 import 'package:flutter/material.dart';
 import 'package:demir/Utils/commonUtils.dart';
@@ -37,22 +36,10 @@ class homePageState extends State<homePage>{
   @override
   void initState(){
     super.initState();
-    SharedPref pref = new SharedPref();
-    print("<><>>>>Pref ${pref.readBool("LogIn")}");
-    pref.readBool("LogIn").then((value){
-      if(!value){
-        setState(() {
-          _selectedDrawerIndex = 7;
-        });
-
-      }
-      else{
-        appCommon.firebaseInit().then((result){
-          setState(() {
-            _selectedDrawerIndex = 0;
-          });
-        });
-      }
+    appCommon.firebaseInit().then((result){
+      setState(() {
+        _selectedDrawerIndex = 0;
+      });
     });
   }
   _getDrawerItemWidget(int pos){
@@ -71,8 +58,6 @@ class homePageState extends State<homePage>{
 //        return new FragmentTechnic();
       case 5:
         return new FragmentContact();
-      case 7:
-        return new FragmentLogin();
       default:
         return new Center(child: SizedBox(width: MediaQuery.of(context).size.width/2,height: MediaQuery.of(context).size.width/2,child:CircularProgressIndicator(strokeWidth: 15,),),);
     }

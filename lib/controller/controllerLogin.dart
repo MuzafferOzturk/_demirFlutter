@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:demir/Firebase/FirebaseMain.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:demir/Utils/SharedPreferences.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 class ControllerLogin {
   var context;
 
@@ -56,7 +57,6 @@ Future<bool> smsCodeDialog(BuildContext context, String verificationId, String c
   bool _textValidate = false;
 
   Future<bool> verifyDone() async{
-    Navigator.of(context).pop();
     if(_text.text.isNotEmpty){
       try{
         FirebaseAuth _auth = FirebaseAuth.instance;
@@ -66,18 +66,30 @@ Future<bool> smsCodeDialog(BuildContext context, String verificationId, String c
         );
         final FirebaseUser user = await _auth.signInWithCredential(credential);
         final FirebaseUser currentUser = await _auth.currentUser();
-        if(user.uid == currentUser.uid){          SharedPref pref = SharedPref();
+        if(user.uid == currentUser.uid){
+          Navigator.of(context).pop();
+          SharedPref pref = SharedPref();
           pref.writeBool("LogIn", true);
           FirebaseMain.saveUser(company, mail, name_surname, phone);
           Navigator.of(context).pushReplacementNamed('/homepage');
         }
         else{
-          Scaffold.of(context).showSnackBar(new SnackBar(content: new Text("Bir Hata Oluştu.\nTekrar Kod Almayı deneyin.",textAlign: TextAlign.center,)));
+          Fluttertoast.showToast(msg: "Gelen Onay Kodunu Kontrol Ediniz.",
+          toastLength: Toast.LENGTH_LONG);
+//          Scaffold.of(context).showSnackBar(new SnackBar(content: new Text("Bir Hata Oluştu.\nTekrar Kod Almayı deneyin.",textAlign: TextAlign.center,)));
         }
       }
       catch(ex){
-        Scaffold.of(context).showSnackBar(new SnackBar(content: new Text("Bir Hata Oluştu.\nTekrar Kod Almayı deneyin",textAlign: TextAlign.center,)));
-        print('|>|>>${ex.toString()}');
+//        Scaffold.of(context).showSnackBar(new SnackBar(content: new Text("Bir Hata Oluştu.\nDaha Sonra Tekrar Deneyin",textAlign: TextAlign.center,)));
+        if(ex.toString().indexOf("ERROR_INVALID_VERIFICATION_CODE")>=0){
+          Fluttertoast.showToast(msg: "Gelen Onay Kodunu Kontrol Ediniz.",
+              toastLength: Toast.LENGTH_LONG);
+        }
+        else{
+          Navigator.of(context).pop();
+          Fluttertoast.showToast(msg: "Bir Hata Oluştu.\nDaha Sonra Tekrar Deneyin.",
+              toastLength: Toast.LENGTH_LONG);
+        }
       }
 
     }

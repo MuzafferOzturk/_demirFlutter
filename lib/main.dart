@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:demir/Utils/commonUtils.dart';
 import 'package:demir/Utils/color.dart';
 import 'package:demir/Pages/homePage.dart';
+import 'package:demir/Pages/LoginPage.dart';
 //import 'package:onesignal/onesignal.dart';
 void main() => runApp(MyApp());
 
@@ -20,9 +21,10 @@ class MyApp extends StatelessWidget {
       title: appCommon.appName,
       theme: new ThemeData(
         primaryColor: color.colorPrimaryDark),
-      home: new homePage(),
+      home: new loginPage(),
       routes: <String, WidgetBuilder>{
-        '/homepage':(BuildContext context) =>homePage()
+        '/homepage':(BuildContext context) =>homePage(),
+        '/loginpage':(BuildContext context) =>loginPage()
     },
     );
   }
