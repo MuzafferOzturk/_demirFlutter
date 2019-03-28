@@ -4,7 +4,7 @@ class SharedPref{
 
   Future<bool>  readBool(String key) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    print("<><>>>>${prefs.getBool(key)}");
+//    print("<><>>>>${prefs.getBool(key)}");
     if(prefs.getBool(key) == null)
       return false;
     else

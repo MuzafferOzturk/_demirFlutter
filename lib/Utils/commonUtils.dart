@@ -30,9 +30,7 @@ class appCommon{
   }
   static Future getCurrency() async{
     var response = await http.get(appCommon.currencyURL);
-//    print("<><>Response ${response.body}");
     var document = xml.parse(response.body);
-//    print("<><>>> Kod->${document.findAllElements("Currency")}");
     var elements = document.findAllElements("Currency");
     if(elements.length!=0){
       for(var element in elements){

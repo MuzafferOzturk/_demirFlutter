@@ -4,6 +4,7 @@ import 'package:demir/Fragments/fragmentInstallment.dart';
 import 'package:demir/Fragments/fragmentNews.dart';
 import 'package:demir/Fragments/fragmentPrice.dart';
 import 'package:demir/Fragments/fragmentShipping.dart';
+import 'package:demir/Fragments/fragmentTechnic.dart';
 import 'package:demir/Utils/color.dart';
 import 'package:flutter/material.dart';
 import 'package:demir/Utils/commonUtils.dart';
@@ -22,7 +23,7 @@ class homePage extends StatefulWidget{
     new drawerItem("Teklif Al",new Image.asset("assets/bidImage.png", scale: 10.0,)),
     new drawerItem("Taksit Seçenekleri", new Image.asset("assets/installment.png", scale: 10.0,)),
     new drawerItem("Nakliye Fiyatları", new Image.asset("assets/shipping.png", scale: 10.0,)),
-//    new drawerItem("Teknik Bilgiler",new Image.asset("assets/technic.png", scale: 10.0,)),
+    new drawerItem("Teknik Bilgiler",new Image.asset("assets/technic.png", scale: 10.0,)),
     new drawerItem("İletişim", new Image.asset("assets/contact.png", scale: 10.0,)),
   ];
   @override
@@ -54,9 +55,9 @@ class homePageState extends State<homePage>{
         return new FragmentInstallment();
       case 4:
         return new FragmentShipping();
-//      case 5:
-//        return new FragmentTechnic();
       case 5:
+        return new FragmentTechnic();
+      case 6:
         return new FragmentContact();
       default:
         return new Center(child: SizedBox(width: MediaQuery.of(context).size.width/2,height: MediaQuery.of(context).size.width/2,child:CircularProgressIndicator(strokeWidth: 15,),),);

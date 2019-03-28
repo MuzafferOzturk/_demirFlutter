@@ -84,6 +84,7 @@ flutter:
     - assets/arrow/right_arrow.png
     - assets/arrow/up_arrow.png
     - assets/arrow/down_arrow.png
+    - assets/technic.xml
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
 
