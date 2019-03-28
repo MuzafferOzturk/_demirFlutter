@@ -25,10 +25,10 @@ class controllerContact{
         return 'tel:${appCommon.landPhone}';
         break;
       case enumsURL.LOCATION:
-//        if(Platform.isAndroid)
-          return 'https://www.google.com/maps/dir/${appCommon.separator}api=1&origin=&destination=${appCommon.mapAdress}&travelmode=driving';
-//        else
-//          return '';
+        var strReturn = Platform.isAndroid
+            ? 'https://www.google.com/maps/dir/${appCommon.separator}api=1&origin=&destination=${appCommon.mapAdress}&travelmode=driving'
+            : 'https://maps.apple.com/?q=0,0';
+        return strReturn;
         break;
       default:
         return '';

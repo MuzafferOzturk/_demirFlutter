@@ -29,7 +29,6 @@ dependencies:
   xml: ^3.4.1
   flutter_launcher_icons: "^0.7.0"
   shared_preferences: ^0.5.1+2
-  onesignal: ^1.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
