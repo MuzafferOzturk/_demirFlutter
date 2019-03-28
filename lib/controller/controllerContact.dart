@@ -27,7 +27,7 @@ class controllerContact{
       case enumsURL.LOCATION:
         var strReturn = Platform.isAndroid
             ? 'https://www.google.com/maps/dir/${appCommon.separator}api=1&origin=&destination=${appCommon.mapAdress}&travelmode=driving'
-            : 'https://maps.apple.com/?q=0,0';
+            : 'http://maps.apple.com/${appCommon.separator}saddr=current%20location&daddr=Oymaagac+Kayseri&dirflg=d';
         return strReturn;
         break;
       default:
